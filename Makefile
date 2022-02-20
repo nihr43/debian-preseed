@@ -24,9 +24,9 @@ iso_seeded: iso_extract
 	find iso_extract/ -follow -type f ! -name md5sum.txt -print0 | xargs -0 md5sum > iso_extract/md5sum.txt
 	chmod -w iso_extract/md5sum.txt
 	chmod +w iso_extract/isolinux/isolinux.bin
-	genisoimage -r -J -b isolinux/isolinux.bin -c isolinux/boot.cat \
-	  -no-emul-boot -boot-load-size 4 -boot-info-table \
-	  -o iso_seeded iso_extract
+	xorriso -as mkisofs -o iso_seeded \
+          -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot \
+          -boot-load-size 4 -boot-info-table iso_extract
 
 clean:
 	if [ -f iso_seeded ] ; then rm -vrf iso_seeded ; fi
