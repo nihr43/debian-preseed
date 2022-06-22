@@ -33,10 +33,10 @@ clean:
 	if [ -d iso_extract ] ; then chmod +w -R iso_extract && rm -vrf iso_extract ; fi
 
 d1.img:
-	dd if=/dev/zero of=d1.img bs=1M count=4096
+	fallocate -l 4g d1.img
 
 d2.img:
-	dd if=/dev/zero of=d2.img bs=1M count=4096
+	fallocate -l 4g d2.img
 
 vm: iso_seeded d1.img d2.img
 	qemu-system-x86_64 -m size=1g -smp cpus=2 -enable-kvm --cdrom iso_seeded -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
