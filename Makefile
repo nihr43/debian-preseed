@@ -31,12 +31,14 @@ iso_seeded: iso_extract
 clean:
 	if [ -f iso_seeded ] ; then rm -vrf iso_seeded ; fi
 	if [ -d iso_extract ] ; then chmod +w -R iso_extract && rm -vrf iso_extract ; fi
+	if [ -f d1.img ] ; then rm d1.img ; fi
+	if [ -f d2.img ] ; then rm d2.img ; fi
 
 d1.img:
-	fallocate -l 4g d1.img
+	fallocate -l 16g d1.img
 
 d2.img:
-	fallocate -l 4g d2.img
+	fallocate -l 16g d2.img
 
 vm: iso_seeded d1.img d2.img
 	qemu-system-x86_64 -m size=1g -smp cpus=2 -enable-kvm --cdrom iso_seeded -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
