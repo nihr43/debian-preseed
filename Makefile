@@ -8,7 +8,7 @@ iso_extract: iso_src
 	bsdtar -C iso_extract -xf iso_src
 
 iso_seeded: iso_extract
-	hash gunzip cpio pigz genisoimage
+	hash gunzip cpio pigz genisoimage isohybrid
 	chmod +w -R iso_extract/boot
 	cat grub.cfg > iso_extract/boot/grub/grub.cfg
 	chmod -w -R iso_extract/boot
@@ -24,9 +24,10 @@ iso_seeded: iso_extract
 	find iso_extract/ -follow -type f ! -name md5sum.txt -print0 | xargs -0 md5sum > iso_extract/md5sum.txt
 	chmod -w iso_extract/md5sum.txt
 	chmod +w iso_extract/isolinux/isolinux.bin
-	xorriso -as mkisofs -o iso_seeded \
+	xorriso -as mkisofs -iso-level 3 -o iso_seeded \
           -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot \
           -boot-load-size 4 -boot-info-table iso_extract
+	isohybrid iso_seeded
 
 clean:
 	if [ -f iso_seeded ] ; then rm -vrf iso_seeded ; fi
