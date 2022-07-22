@@ -1,7 +1,7 @@
 test: vm
 
 src.iso:
-	wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.4.0-amd64-netinst.iso -O src.iso
+	wget https://cdimage.debian.org/cdimage/weekly-builds/amd64/iso-dvd/debian-testing-amd64-DVD-1.iso -O src.iso
 
 iso_extract: src.iso
 	mkdir -p iso_extract
