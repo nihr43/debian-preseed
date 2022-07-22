@@ -20,3 +20,9 @@ kvm accelerated qemu requires you are in the libvirt group:
 $ groups
 ... libvirt
 ```
+
+Debian packages to build:
+
+```
+libarchive-tools pigz xorriso genisoimage syslinux-utils qemu-system
+```
