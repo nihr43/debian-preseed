@@ -42,4 +42,4 @@ d2.img:
 	fallocate -l 8g d2.img
 
 vm: seeded.iso d1.img d2.img
-	qemu-system-x86_64 -m size=4g -smp cpus=4 -enable-kvm --cdrom seeded.iso -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
+	qemu-system-x86_64 -m size=4g -smp cpus=4 -enable-kvm -drive file=seeded.iso,if=ide,format=raw -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
