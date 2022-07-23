@@ -7,7 +7,7 @@ iso_extract: src.iso
 	mkdir -p iso_extract
 	bsdtar -C iso_extract -xf src.iso
 
-preseeded.iso: iso_extract
+seeded.iso: iso_extract
 	hash cpio pigz genisoimage isohybrid
 	chmod +w -R iso_extract/boot
 	cat grub.cfg > iso_extract/boot/grub/grub.cfg
@@ -24,13 +24,13 @@ preseeded.iso: iso_extract
 	find iso_extract/ -follow -type f ! -name md5sum.txt -print0 | xargs -0 md5sum > iso_extract/md5sum.txt
 	chmod -w iso_extract/md5sum.txt
 	chmod +w iso_extract/isolinux/isolinux.bin
-	xorriso -as mkisofs -iso-level 3 -o preseeded.iso \
+	xorriso -as mkisofs -iso-level 3 -o seeded.iso \
           -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot \
           -boot-load-size 4 -boot-info-table iso_extract
-	isohybrid preseeded.iso
+	isohybrid seeded.iso
 
 clean:
-	if [ -f preseeded.iso ] ; then rm -vrf preseeded.iso ; fi
+	if [ -f seeded.iso ] ; then rm -vrf seeded.iso ; fi
 	if [ -d iso_extract ] ; then chmod +w -R iso_extract && rm -vrf iso_extract ; fi
 	if [ -f d1.img ] ; then rm d1.img ; fi
 	if [ -f d2.img ] ; then rm d2.img ; fi
@@ -41,5 +41,5 @@ d1.img:
 d2.img:
 	fallocate -l 8g d2.img
 
-vm: preseeded.iso d1.img d2.img
-	qemu-system-x86_64 -m size=4g -smp cpus=4 -enable-kvm --cdrom preseeded.iso -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
+vm: seeded.iso d1.img d2.img
+	qemu-system-x86_64 -m size=4g -smp cpus=4 -enable-kvm --cdrom seeded.iso -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw -boot menu=on
