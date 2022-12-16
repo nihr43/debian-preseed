@@ -30,10 +30,10 @@ seeded.iso: iso_extract
 	isohybrid seeded.iso
 
 clean:
-	if [ -f seeded.iso ] ; then rm -vrf seeded.iso ; fi
+	rm -vrf seeded.iso
 	if [ -d iso_extract ] ; then chmod +w -R iso_extract && rm -vrf iso_extract ; fi
-	if [ -f d1.img ] ; then rm d1.img ; fi
-	if [ -f d2.img ] ; then rm d2.img ; fi
+	rm -f d1.img
+	rm -f d2.img
 
 d1.img:
 	fallocate -l 4g d1.img
