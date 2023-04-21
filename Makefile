@@ -1,5 +1,3 @@
-test: vm
-
 src.iso:
 	wget https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso
 
@@ -32,20 +30,18 @@ seeded.iso: iso_extract
 clean:
 	rm -vrf seeded.iso
 	if [ -d iso_extract ] ; then chmod +w -R iso_extract && rm -vrf iso_extract ; fi
-	rm -f nvme0.img
-	rm -f d1.img
-	rm -f d2.img
+	rm -f d0.img d1.img
 
-nvme0.img:
-	fallocate -l 2g nvme0.img
+d0.img:
+	fallocate -l 4g d0.img
 
 d1.img:
-	fallocate -l 2g d1.img
-
-d2.img:
-	fallocate -l 3g d2.img
+	fallocate -l 4g d1.img
 
 qemu_common=qemu-system-x86_64 -m size=8g -smp cpus=8 -enable-kvm -cdrom seeded.iso -boot menu=on
 
-vm: seeded.iso nvme0.img d1.img d2.img
-	$(qemu_common) -drive file=nvme0.img,if=none,id=nvm,format=raw -device nvme,serial=aabbccee,drive=nvm -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw
+sata_raid: seeded.iso nvme0.img d0.img d1.img
+	$(qemu_common) -drive file=d1.img,if=ide,format=raw -drive file=d2.img,if=ide,format=raw
+
+nvme_single: seeded.iso d0.img d1.img
+	$(qemu_common) -drive file=d0.img,if=none,id=nvme0,format=raw -device nvme,serial=aabbccee,drive=nvme0
