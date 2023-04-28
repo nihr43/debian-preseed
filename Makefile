@@ -45,3 +45,6 @@ sata_raid: seeded.iso d0.img d1.img
 
 nvme_single: seeded.iso d0.img d1.img
 	$(qemu_common) -drive file=d0.img,if=none,id=nvme0,format=raw -device nvme,serial=aabbccee,drive=nvme0
+
+uefi: seeded.iso d0.img d1.img
+	$(qemu_common) -bios /usr/share/qemu/OVMF.fd
