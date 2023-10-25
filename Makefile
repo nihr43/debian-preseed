@@ -38,7 +38,7 @@ d0.img:
 d1.img:
 	fallocate -l 4g d1.img
 
-qemu_common=qemu-system-x86_64 -m size=8g -smp cpus=8 -enable-kvm -cdrom seeded.iso -boot menu=on
+qemu_common=qemu-system-x86_64 -m size=8g -smp cpus=8 -enable-kvm -cdrom seeded.iso -boot menu=on -boot once=d
 
 sata_raid: seeded.iso d0.img d1.img
 	$(qemu_common) -drive file=d0.img,if=ide,format=raw -drive file=d1.img,if=ide,format=raw
