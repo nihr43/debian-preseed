@@ -40,6 +40,9 @@ d1.img:
 
 qemu_common=qemu-system-x86_64 -m size=8g -smp cpus=8 -enable-kvm -cdrom seeded.iso -boot menu=on -boot once=d
 
+sata_single: seeded.iso d0.img d1.img
+	$(qemu_common) -drive file=d0.img,if=ide,format=raw
+
 sata_raid: seeded.iso d0.img d1.img
 	$(qemu_common) -drive file=d0.img,if=ide,format=raw -drive file=d1.img,if=ide,format=raw
 
