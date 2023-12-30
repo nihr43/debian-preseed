@@ -31,3 +31,15 @@ Debian packages required to build:
 ```
 libarchive-tools pigz xorriso genisoimage syslinux-utils qemu-system
 ```
+
+Or alternatively on nixOS:
+
+```
+nix-shell .
+```
+
+or more concisely:
+
+```
+nix-shell . --run 'make sata_single'
+```
